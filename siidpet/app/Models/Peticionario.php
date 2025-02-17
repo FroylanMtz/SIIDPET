@@ -25,6 +25,7 @@ class Peticionario extends Model
         'telefono',
         'telefono_particular',
         'id_direccion',
+        'activo',
         'created_at',
         'updated_at'
     ];

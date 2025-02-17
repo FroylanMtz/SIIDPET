@@ -13,5 +13,6 @@ class EstatusSedeMinisterial extends Model
 
     protected $fillable = [
         'nombre',
+        'activo',
     ];
 }

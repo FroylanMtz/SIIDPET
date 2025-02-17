@@ -12,7 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        "http://172.21.85.37/expediente",
-        "http://172.21.85.37/expediente/*",
+        "http://172.21.85.37/defensor",
+        "http://172.21.85.37/defensor/*",
     ];
 }

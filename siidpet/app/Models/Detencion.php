@@ -15,6 +15,8 @@ class Detencion extends Model
         'fecha',
         'hora',
         'resultado_examen',
+        'activo',
+
     ];
 
 

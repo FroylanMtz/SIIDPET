@@ -39,8 +39,8 @@ class prorrogaPlazoInvestigacionComplemenatriaController extends Controller
     {
         //Se validan los datos a traves de laravel
         $request->validate([
-            'fecha' => 'required',
-            'hora' => 'required',
+            'fecha_inicio' => 'required',
+            'fecha_vencimiento' => 'required',
         ]);
 
         //Se usa la función create() con el request que guarda el objeto

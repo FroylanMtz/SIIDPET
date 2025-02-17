@@ -15,9 +15,25 @@ class imputadoController extends Controller
     public function index()
     {
         //return response("Imputados guardado con éxito", 200);
+        $imputado = imputado::with('pais','estado', 'municipio', 'escolaridad', 'ocupacion')->get();
+
+        // $expediente = Expediente::with('ugi','')->get();
+        return response( $imputado );
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function imputadoPorExpediente($idExpediente)
+    {
+        //return response("Imputados guardado con éxito", 200);
         $imputado = imputado::all();
         return response( $imputado );
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -74,7 +90,7 @@ class imputadoController extends Controller
         $request->validate([
             'nombres' => 'required',
             'apellido_paterno'=> 'required',
-            'apellido_materno'=> 'required',
+            // 'apellido_materno'=> 'required',
             'telefono'=> 'required',
             'domicilio'=> 'required',
             'sexo'=> 'required',
@@ -103,7 +119,12 @@ class imputadoController extends Controller
     public function show($id)
     {
         //Se obtiene el registro de la base de datos
-        $imputado = imputado::find($id);
+        // $imputado = imputado::find($id);
+
+        $imputado = Imputado::with('pais', 'estado', 'municipio', 'escolaridad', 'ocupacion')
+        ->where('id', $id)
+        ->first();
+
 
         //Compara si la consulta encontró datos
         if (! $imputado) {
@@ -164,7 +185,9 @@ class imputadoController extends Controller
         // Verificar si el usuario existe
         if ( $imputado ) {
             // Eliminar el usuario
-            $imputado->delete();
+            // $imputado->delete();
+            $imputado->activo = 0;
+            $imputado->save();
             return response()->json(['mensaje' => 'Datos del imputado eliminados correctamente'], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);

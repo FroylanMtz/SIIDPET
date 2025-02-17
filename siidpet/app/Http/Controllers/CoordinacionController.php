@@ -118,8 +118,18 @@ class CoordinacionController extends Controller
         // Verificar si el usuario existe
         if ( $coordinacion ) {
             // Eliminar el usuario
-            $coordinacion->delete();
-            return response()->json(['mensaje' => 'Datos de la coordinacion eliminados correctamente'], 201);
+            // $coordinacion->delete();
+            // $coordinacion->activo = ! $coordinacion->activo;
+
+            if( $coordinacion->activo == 0 ){
+                $coordinacion->activo = 1;
+            }else{
+                $coordinacion->activo = 0;
+            }
+
+            $coordinacion->save();
+            
+            return response()->json(['mensaje' => 'Datos de la coordinacion eliminados correctamente', 'coordinacion' => $coordinacion ], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);
         }

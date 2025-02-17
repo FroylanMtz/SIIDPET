@@ -23,6 +23,7 @@ class Direccion extends Model
         'pais',
         'num_ext',
         'num_int',
+        'activo',
         'created_at',
         'updated_at'
     ];   

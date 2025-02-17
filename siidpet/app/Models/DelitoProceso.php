@@ -16,6 +16,9 @@ class DelitoProceso extends Model
         'fecha_fin',
         'resultado',
         'observaciones',
-        // ... otras propiedades ...
+        'activo',
+
+      
     ];
 }
+  // ... otras propiedades ...

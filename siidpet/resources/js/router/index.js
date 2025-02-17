@@ -20,6 +20,12 @@ import Delito from '../components/admin/Delito.vue';
 import MedidasProteccion from '../components/admin/MedidasProteccion.vue';
 import Juez from '../components/admin/Juez.vue';
 import Medidas from '../components/admin/Medidas.vue';
+
+import Coordinaciones from '../components/admin/Coordinaciones.vue';
+
+import TribunalEnjuiciamiento from '../components/admin/TribunalEnjuiciamiento.vue';
+
+import Test from '../components/defensor/componentes/CmpTestChart.vue';
 const routes = [
     {
         path: '/',
@@ -28,7 +34,7 @@ const routes = [
     },
     {
         path: '/usuarios',
-        name: 'usuarios',
+        name: ' ',
         component: Usuarios,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
@@ -149,6 +155,30 @@ const routes = [
         component: Medidas,
         meta: { requiresAuth: true, requiresAdmin: true }
     },
+
+    {
+        path: "/Coordinaciones",
+        name: "Coordinaciones",
+        component: Coordinaciones,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+
+    {
+        path: "/Tribunal",
+        name: "Tribunal",
+        component: TribunalEnjuiciamiento,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
+
+    {
+        path: "/testgraf",
+        name: "testgraf",
+        component: Test,
+        meta: { requiresAuth: true, requiresAdmin: true }
+    },
+
     {
         path: "/:catchAll(.*)",
         name: "NotFound",
@@ -164,7 +194,7 @@ const router = createRouter({
 
 /*
 router.beforeEach((to, from, next) => {
-
+    
     const rol = window.rol;
     const isAdmin = (rol == 1) ? true : false;
     const isDG = (rol == 2) ? true : false;
@@ -174,7 +204,6 @@ router.beforeEach((to, from, next) => {
     const isD = (rol == 6) ? true : false;
     const isA = (rol == 7) ? true : false;
 
-    
     if(rol == undefined ){
         next('/login');
         console.log( from );
@@ -195,21 +224,9 @@ router.beforeEach((to, from, next) => {
     } else if (to.meta.requiresA && !isA) {
         next('/denegado');
     } else {
-        console.log("ENTRE AQUI ");
-        console.log("ROL " + rol);
-        console.log("Admin: " + isAdmin );
-        console.log("Director General: " + isDG );
-        console.log("Director Defensorias: " + isDD );
-        console.log("Director Asesorias: " + isDA );
-        console.log("Jefe Asesorias: " + isJA );
-        console.log("Defensor: " + isD );
-        console.log("Asesor: " + isA );
         next();
     }
-
-
-    //check page is protected or not
-
+    
     const baseUrl = "/" + to.fullPath.split('/')[1]
     let permitirAcceso = false;
     for (let index = 0; index < window.permisosSession.length; index++) {
@@ -228,6 +245,7 @@ router.beforeEach((to, from, next) => {
     console.log("ROL");
     console.log( window.rol );
     next();
+    
 
 });
 */

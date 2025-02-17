@@ -14,6 +14,7 @@ class municipiosSeeder extends Seeder
      */
     public function run()
     {
+        /*
         DB::table('municipio')->insert([
             'nombre' =>  'Abasolo',
             'IDCoordinacion' => 1,
@@ -228,20 +229,8 @@ class municipiosSeeder extends Seeder
             'nombre' =>  'Xicoténcatl',
             'IDCoordinacion' => 2,
         ]);
+        */
 
-         DB::table('municipio')->insert([
-            'nombre' =>  '',
-            'IDCoordinacion' => ,
-        ]);
-
-         DB::table('municipio')->insert([
-            'nombre' =>  '',
-            'IDCoordinacion' => ,
-        ]);
-
-         DB::table('municipio')->insert([
-            'nombre' =>  '',
-            'IDCoordinacion' => ,
-        ]);
+         
     }
 }

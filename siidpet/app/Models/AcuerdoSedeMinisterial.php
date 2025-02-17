@@ -12,10 +12,12 @@ class AcuerdoSedeMinisterial extends Model
     protected $table = 'acuerdo_sede_ministerial';
 
     protected $fillable = [
-        'medidas_de_proteccion',
+        'mecanismos_sede_ministerial',
         'fecha_inicio',
         'fecha_fin',
         'id_estatus_sede_ministerial',
-        'fecha'
+        'fecha',
+        'activo',
+
     ];
 }

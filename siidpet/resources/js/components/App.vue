@@ -7,7 +7,7 @@
 <script>
     export default {
         mounted() {
-            console.log('PLANTILLA CARGADA.')
+            // onsole.log('PLANTILLA CARGADA.')
         }
     }
 </script>

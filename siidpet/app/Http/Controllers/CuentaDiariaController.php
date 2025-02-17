@@ -39,8 +39,9 @@ class CuentaDiariaController extends Controller
 
     public function obtenerAudiencias(){
 
-        $audiencias = DB::table('audiencia')->get();
-        return response( $audiencias );
+       //  $audiencias = DB::table('audiencia')->get();
+        
+       return response( "asdfasdf" );
 
     }
 

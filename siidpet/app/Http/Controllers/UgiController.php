@@ -8,16 +8,15 @@ use App\Models\Ugi;
 class UgiController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resourcee.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         //
-        $ugis = Ugi::orderBy('activo', 'DESC')->get();
+        $ugis = Ugi::all();
         return response($ugis);
-        //return csrf_token(); 
     }
 
     /**
@@ -38,15 +37,12 @@ class UgiController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //
         $request->validate([
             'nombre' => 'required',
         ]);
 
         $ugi = Ugi::create( $request->all() );
 
-        // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
         return response()->json(['mensaje' => 'Objeto creado con éxito', 'objeto' => $ugi ], 201);
     }
 
@@ -79,10 +75,7 @@ class UgiController extends Controller
         $ugi = Ugi::find($id);
 
         if ($ugi) {
-            // Eliminar el usuario
-            //$ugi->delete();
-        
-      
+            
             $ugi->activo = 1;
             $ugi->save();
         
@@ -124,17 +117,14 @@ class UgiController extends Controller
      */
     public function destroy($id)
     {
-         // return response()->json(['mensaje' => 'ALGO DE RESPUESTA EN DELETE'], 201);
-        // Buscar el usuario por su ID
         $ugi = Ugi::find($id);
 
-        // Verificar si el usuario existe
         if ($ugi) {
-            // Eliminar el usuario
-            //$ugi->delete();
-        
-      
-            $ugi->activo = 0;
+            if( $ugi->activo == 0 ){
+                $ugi->activo = 1;
+            }else{
+                $ugi->activo = 0;
+            }
             $ugi->save();
         
             return response()->json(['mensaje' => 'Ugi eliminado correctamente'], 201);

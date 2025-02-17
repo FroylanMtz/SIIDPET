@@ -38,6 +38,7 @@ class medidaCautelarController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
+            'fecha' => 'required'
         ]);
 
         $medida_cautelar = MedidaCautelar::create( $request->all() );
@@ -115,7 +116,17 @@ class medidaCautelarController extends Controller
         // Verificar si el usuario existe
         if ( $medida_cautelar ) {
             // Eliminar el usuario
-            $medida_cautelar->delete();
+            // $medida_cautelar->delete();
+
+            if( $medida_cautelar->activo == 0 ){
+                $medida_cautelar->activo = 1;
+            }else{
+                $medida_cautelar->activo = 0;
+            }
+
+            $medida_cautelar->save();
+
+
             return response()->json(['mensaje' => 'Datos de la medida cautelar eliminados correctamente'], 201);
         } else {
             return response()->json(['mensaje' => 'No se ha encontrado el dato'], 201);

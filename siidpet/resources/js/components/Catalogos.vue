@@ -215,8 +215,6 @@ export default {
         obtenerUsuarios() {
             this.items = [];
             this.axios.get('/users').then( (response) => {
-                console.log("Usuarios obtenidos");
-
                 let usuarios = [];
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];

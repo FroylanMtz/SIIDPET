@@ -24,6 +24,9 @@ use App\Models\Conclusion;
 use App\Models\Impugnacion; 
 use App\Models\OrdenAprencion; 
 
+use App\Models\ExamenDetencion;
+
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -68,6 +71,9 @@ class Expediente extends Model
         "visita_carcelaria",
         "id_impugnacion",
         "id_orden_aprencion",
+        "ppl",
+        "id_examen_detencion",
+        'activo',
         // ... otras propiedades ...
     ];
     
@@ -193,9 +199,10 @@ class Expediente extends Model
     }
 
 
-
-
-
+    public function imputados()
+    {
+        return $this->belongsToMany(imputado::class, 'ImputadosExpediente', 'id_expediente', 'id_imputado'); 
+    }
 
 
 

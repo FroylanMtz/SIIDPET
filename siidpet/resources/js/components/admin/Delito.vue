@@ -20,9 +20,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                <div class="card">
                     <div class="card-header">
-                         <h3 class="card-title mt-2"> Registro de Delitos </h3>  
+                         <h3 class="card-title mt-2"> Registro de delitos </h3>  
                         <div class="card-tools">
                             <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregar"
                                 @click="abrirModalRegistro">
@@ -58,7 +57,6 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <EasyDataTable buttons-pagination :headers="datos" :items="items" :theme-color="themeColor"
                             :search-field="searchField" :search-value="searchValue">
                             <template #item-operation="item">
@@ -68,11 +66,11 @@
                                     </button>
 
                                     <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item)">
-                                        <i class="fa-solid fa-trash"></i>
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
 
                                     <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="activar(item)">
-                                        <i class="<fa-solid fa-plus"></i>
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
                                     
                                 </div>
@@ -82,16 +80,15 @@
                 </div>
             </div>
         </div>
-      
         <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <form
-                    @submit.prevent="actualizarCheck === false ? registrarDefensor : actualizarRegistro" @keydown="form.onKeydown($event)">
+                    @submit.prevent="actualizarCheck === false ? registrarJuez : actualizarRegistro" @keydown="form.onKeydown($event)">
                         <div class="modal-header">
                             <h5 v-if="!actualizarCheck" class="modal-title" id="modalAgregar"> Nuevo </h5>
-                            <h5 v-else class="modal-title" id="modalAgregar"> Actualizar delito </h5>
+                            <h5 v-else class="modal-title" id="modalAgregar"> Actualizar Juez </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -104,14 +101,12 @@
                                     aria-describedby="emailHelp" placeholder="Nombre">
                                 <div style="color: red;" v-if="form.errors.has('nombre')" v-html="form.errors.get('nombre')" />
                             </div>
-
-                        
                             <input id="activo" name="activo" type="hidden" value="1" />
 
+                            </div>     
+
+                 
                             
-                        
-                            </div>
-                       
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
@@ -133,7 +128,6 @@
         </div>
 
     </div>
-</div>
 </template>
 
 <script lang="ts">
@@ -149,11 +143,10 @@ export default {
             roles: ref(["Administrador", "Director General", "Director Defensoría", "Director Asesorias", "Jefe Asesorias", "Defensor", "Asesor"]),
             actualizarCheck: ref(false),
             searchField: ref("nombre"),
-            searchValue: ref(""),
+           // searchValue: ref(""),
             themeColor: "#AB0033",
             datos: [
                 { text: "Nombre", value: "nombre" },
-              
                 { text: "Opciones", value: "operation" }
             ],
             items: [],
@@ -161,12 +154,14 @@ export default {
             form: new Form({
                 id: '',
                 nombre: '',
+                //id_municipio:"",
                 activo:1,
             })
         }
     },
     mounted() {
         this.obtenerDatos();
+
     },
     methods: {
         abrirModalRegistro() {
@@ -178,28 +173,28 @@ export default {
         obtenerDatos() {
             this.items = [];
             this.axios.get('/delito').then( (response) => {
-                 
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
-                    element.rol = this.roles[ element.IDRol - 1 ]
-                    //console.log("usuario "+i + " : ");
-                    //console.log(element);
                     this.items.push( element );
                 }
             })
         },
-
+ 
+ 
         async registrar() {
 
             await this.form.post('/delito').then((response) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Registro guardado con éxito',
+                    title: 'Delito guardado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 }) 
-                this.obtenerDatos();
+                console.log("entra")
+                 console.log(response.data)
+                 console.log("entra")
+               // this.obtenerDatos();
 
                 $('#modalAgregar').modal('hide');
 
@@ -210,12 +205,15 @@ export default {
 
             
         },
-        async actualizarRegistro(dato) {
+        async actualizarRegistro(juez) {
             $('#modalAgregar').modal('show');
-            this.form.fill(dato);
+            console.log(juez);
+            this.form.fill(juez);
             this.actualizarCheck = true;
         },
         async editarRegistro() {
+            console.log("se va a mandar");
+            console.log(this.id);
             await this.form.put('/delito/' + this.form.id, this.form).then((response) => {
                 console.log(response);
                 this.obtenerDatos();
@@ -224,7 +222,7 @@ export default {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Usuario actualizado con éxito',
+                    title: 'Juez actualizado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -233,7 +231,7 @@ export default {
             });
         },
 
-        desactivar($dato) {
+        desactivar($juez) {
        
             Swal.fire({
                 title: '¿Está seguro de desactivar este Registro??',
@@ -242,7 +240,7 @@ export default {
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('delito/' + $dato.id).then((response) => {
+                    this.axios.delete('/delito/' + $juez.id).then((response) => {
                         console.log("Respuesta de la eliminacion");
                         console.log(response);
                         this.obtenerDatos();
@@ -251,7 +249,7 @@ export default {
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'Registro desactivado con éxito',
+                            title: 'Registro eliminado con éxito',
                             showConfirmButton: false,
                             timer: 1500
                         })
@@ -264,16 +262,16 @@ export default {
             }) 
 
         },
-        activar($dato) {
+        activar($elemento) {
        
             Swal.fire({
-                title: '¿Está seguro de activar este Registro??',
+                title: '¿Está seguro de activar este Registro?',
                 showDenyButton: true,
                 confirmButtonText: 'Aceptar',
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.get('/delito/'+ $dato.id+"/edit").then((response) => {
+                    this.axios.get('/delito/'+ $elemento.id+"/edit").then((response) => {
                         console.log("Respuesta de la activacion");
                         console.log(response);
                         this.obtenerDatos();

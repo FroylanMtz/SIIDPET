@@ -43,6 +43,7 @@ class ImpugnacionController extends Controller
         $request->validate([
             'nombre' => 'required',
             'fecha_impugnacion' => 'required',
+            'observaciones' => 'required'
         ]);
 
         //Se usa la función create() con el request que guarda el objeto
@@ -69,7 +70,7 @@ class ImpugnacionController extends Controller
         }
 
         //Lo retorna con un código 201
-        return response()->json(['impugancion' => $impugnacion], 201);
+        return response()->json(['impugnacion' => $impugnacion], 201);
     }
 
     /**

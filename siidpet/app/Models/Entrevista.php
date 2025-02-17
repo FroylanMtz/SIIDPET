@@ -14,5 +14,6 @@ class Entrevista extends Model
         'id_defensor',
         'fecha',
         'observaciones',
+        'activo',
     ];
 }

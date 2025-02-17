@@ -12,8 +12,9 @@ class ProrrogaPlazoInvestigacionComplementaria extends Model
     protected $table = 'prorroga_plazo_investigacion_complementaria';
 
     protected $fillable = [
-        'fecha',
-        'hora',
+        'fecha_inicio',
+        'fecha_vencimiento',
+        'activo',
         // ... otras propiedades ...
     ];
 

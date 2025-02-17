@@ -14,5 +14,6 @@ class MedidaCautelarA extends Model
     protected $fillable = [
         'nombre',
         'id_medida_cautelar'
+        'activo',
     ];
 }

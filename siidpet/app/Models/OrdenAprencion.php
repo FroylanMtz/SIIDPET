@@ -15,6 +15,7 @@ class OrdenAprencion extends Model
         'fecha',
         'hora',
         'observaciones',
+        'activo',
     ];
 
 }

@@ -45,7 +45,6 @@
                                             <span class="">Buscar por: </span>
                                             <select class="custom-select " v-model="searchField">
                                                 <option value="nombre">Nombre</option>
-                                                
                                             </select>
                                         </div>
                                         <div class="col-6">
@@ -65,12 +64,12 @@
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
 
-                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item)">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item, 'desactivar')">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
 
-                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="activar(item)">
-                                        <i class="<fa-solid fa-plus"></i>
+                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="desactivar(item, 'activar')">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
                                     
                                 </div>
@@ -106,8 +105,7 @@
                             
                         
                             </div>
-                                     
-                        <div class="modal-footer">
+                            <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
@@ -118,9 +116,6 @@
                             <button v-else type="submit" :disabled="form.busy" class="btn btn-warning" @click="editarRegistro">
                                 <i class="fas fa-save"></i> Actualizar
                             </button>
-
-
-
                         </div>
                     </form>
                 </div>
@@ -171,14 +166,10 @@ export default {
         obtenerDatos() {
             this.items = [];
             this.axios.get('/ugi').then( (response) => {
-               // console.log("Usuarios obtenidos");
-
                 let usuarios = [];
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     element.rol = this.roles[ element.IDRol - 1 ]
-                    //console.log("usuario "+i + " : ");
-                  //  console.log(element);
                     this.items.push( element );
                 }
             })
@@ -202,17 +193,16 @@ export default {
                 console.log(error);
 
             });
-
-            
         },
+
         async actualizarRegistro(defensor) {
             $('#modalAgregar').modal('show');
             this.form.fill(defensor);
             this.actualizarCheck = true;
         },
+
         async editarRegistro() {
             await this.form.put('/ugi/' + this.form.id, this.form).then((response) => {
-                console.log(response);
                 this.obtenerDatos();
                 $('#modalAgregar').modal('hide');
 
@@ -228,18 +218,16 @@ export default {
             });
         },
 
-        desactivar($usuario) {
+        desactivar($usuario, mensaje) {
        
             Swal.fire({
-                title: '¿Está seguro de eliminar este Registro??',
+                title: '¿Está seguro de '+ mensaje +' este Registro?',
                 showDenyButton: true,
                 confirmButtonText: 'Aceptar',
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.delete('ugi/' + $usuario.id).then((response) => {
-                        console.log("Respuesta de la eliminacion");
-                        console.log(response);
                         this.obtenerDatos();
                         $('#modalAgregar').modal('hide');
 
@@ -259,37 +247,6 @@ export default {
             }) 
 
         },
-        activar($usuario) {
-       
-            Swal.fire({
-                title: '¿Está seguro de activar este Registro??',
-                showDenyButton: true,
-                confirmButtonText: 'Aceptar',
-                denyButtonText: `Cancelar`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.axios.get('/ugi/'+ $usuario.id+"/edit").then((response) => {
-                        console.log("Respuesta de la activacion");
-                        console.log(response);
-                        this.obtenerDatos();
-                        $('#modalAgregar').modal('hide');
-
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: 'Registro activado con éxito',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
-                    }).catch(error => {
-                        console.log(error);
-                    });
-                } else if (result.isDenied) {
-                    //Swal.fire('Changes are not saved', '', 'info')
-                }
-            }) 
-
-        }
     }
 }
 </script>

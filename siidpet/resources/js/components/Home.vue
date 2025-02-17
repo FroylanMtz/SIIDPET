@@ -1,46 +1,27 @@
 <template>
     <!-- Content Header (Page header) -->
     <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h5 class="m-0">Inicio | </h5>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
+      <div class="d-flex justify-content-between align-items-center ">
+          <h1 class="h4">Inicio</h1>
+      </div>
+  </div>
     <!-- /.content-header -->
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header border-0"></div>
-
-                    <div class="card-body">
-                        <h1> Sistema Integral del Instituto de Defensoría Pública </h1>
-                        <!-- <div id="piechart" style="width: 900px; height: 500px;"></div> -->
-                        Sesión iniciada como 
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h1> {{ this.totalExpediente }} </h1>
 
                 <p> Expedientes </p>
               </div>
               <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="ion-ios-book"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              
             </div>
           </div>
           <!-- ./col -->
@@ -48,14 +29,14 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                <h1> {{ this.totalUsuarios }} </h1>
 
-                <p>Bounce Rate</p>
+                <p>Usuarios</p>
               </div>
               <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="ion-ios-people"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              
             </div>
           </div>
           <!-- ./col -->
@@ -63,14 +44,14 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>44</h3>
+                <h1> {{ this.totalImputados }} </h1>
 
-                <p>User Registrations</p>
+                <p>Imputados</p>
               </div>
               <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="ion-ios-person"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              
             </div>
           </div>
           <!-- ./col -->
@@ -78,14 +59,14 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h1> {{ this.totalDefensores }} </h1>
 
-                <p>Unique Visitors</p>
+                <p>Defensores</p>
               </div>
               <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="ion-android-people"></i>
               </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              
             </div>
           </div>
           <!-- ./col -->
@@ -95,14 +76,9 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tab-content p-0">
-                    <!-- Morris chart - Sales -->
-                    <div class="chart tab-pane active" id="revenue-chart"
-                        style="position: relative; height: 300px;">
-                        <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                    </div>
-                    <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                        <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                    </div>
+                    
+                      <ChartComponent></ChartComponent>
+
                     </div>
                 </div><!-- /.card-body -->
 
@@ -114,16 +90,30 @@
 </template>
 
 <script>
+import ChartComponent from './CmpTestChart.vue';
 
 export default {
+    components: {
+      ChartComponent
+    },
     name: 'HelloWorld',
     data() {
         return {
             yourName: '',
             visible: false,
+            totalExpediente: 0,
+            totalImputados: 0,
+            totalDefensores: 0,
+            totalUsuarios: 0,
+            nombres: '',
         };
     },
     methods: {
+        decodeHTML(texto) {
+          const textArea = document.createElement('textarea');
+          textArea.innerHTML = texto;
+          return textArea.value;
+        },
         onClick() {
             this.visible = true;
         },
@@ -131,6 +121,27 @@ export default {
             this.visible = false;
         },
     },
+    async created() {
+      
+      const user = window.usuario;
+      const textoDecodificado = this.decodeHTML(user);
+      this.nombres = JSON.parse(textoDecodificado).name ;
+      console.log( JSON.parse(textoDecodificado) );
+      // alert( window.usuario );
+      // alert( JSON.parse(textoDecodificado).name  );
+      try {
+          const expedientes = await this.axios.get('/expediente');
+          this.totalExpediente = expedientes.data.length;
+          const usuarios = await this.axios.get('/users');
+          this.totalUsuarios = usuarios.data.length;
+          const imputados = await this.axios.get('/imputado');
+          this.totalImputados = imputados.data.length;
+          const defensores = await this.axios.get('/defensor');
+          this.totalDefensores = defensores.data.length;
+      } catch (error) {
+          console.error('Error obteniendo los delitos:', error);
+      }
+    }
 };
 </script>
 

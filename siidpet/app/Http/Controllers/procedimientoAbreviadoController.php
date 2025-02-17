@@ -67,7 +67,7 @@ class procedimientoAbreviadoController extends Controller
         }
 
         //Lo retorna con un código 201
-        return response()->json(['procedimientoAbreviado' => $procedimientoAbreviado], 201);
+        return response()->json(['procedimiento_abreviado' => $procedimientoAbreviado], 201);
     }
 
     /**

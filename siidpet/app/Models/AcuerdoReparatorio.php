@@ -15,7 +15,9 @@ class AcuerdoReparatorio extends Model
         'fecha_inicio',
         'fecha_fin',
         'resultado',
-        'observaciones'
+        'observaciones',
+        'activo',
+
     ];
 
 }

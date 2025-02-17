@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--HEAD -->
 <head>
-  <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- <title>{{ config('app.name', 'Laravel') }}</title> -->
-    <title> SIIDEPT </title>
+    <title> Sistema Inegral del Instituto de Defensoría Pública del Estado de Tamaulipas </title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+
+    <!-- Animate -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -31,27 +35,76 @@
   <link href=' http://fonts.googleapis.com/css?family=Encode+Sans' rel='stylesheet' type='text/css'>
 
     <style>
-      body {
-        font-family: 'Encode Sans', serif;
-      }
+body {
+    font-family: 'Encode Sans', serif;
+    background-image: url('img/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* Ajustar el fondo al tamaño de la ventana del navegador */
+    height: 100vh;
+    margin: 0; /* Eliminar margen para que el fondo cubra completamente */
+    padding: 0; /* Eliminar padding para que el fondo cubra completamente */
+  }
+
+  .btn-primary {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+
+      .btn-guindo {
+    background-color: #841D39; /* Color guindo */
+    color: white; /* Color del texto */
+    /* Otras propiedades de estilo si es necesario */
+}
+
     </style>
 
 </head>
+   <!--BODY -->
 <body class="hold-transition login-page" >
+    <!-- ANIMATE -->
+<div class="login-form animate__animated animate__fadeInDown">
 <div class="login-box" style="width: 30rem;">
- 
 <div class="login-logo mt-5 ">
-      
-      
-      
+    
+    <div class="row">
+        <div class="col-6">
+            <img src="{{ asset('img/logoTam.png') }}" class="rounded mx-auto d-block" width="100" height="100"  alt="Logo tam" >
+        </div>
+        <div class="col-6 mt-4">
+            <img src="{{ asset('img/logoIDPET.PNG') }}" class="rounded mx-auto d-block" width="200" height="50"  alt="Logo tam" >
+        </div>
     </div>
+
+
+    
+    
+
+</div>
   <!-- /.login-logo -->
-  <div class="card" >
+  <div class="card" style="background-color: white; border: none; border-radius: 10px;">
 
-  <img src="{{ asset('img/logo_tam_1.jpg') }}" class="rounded mx-auto d-block" width="100" height="100"  alt="Logo tam" >
-      <a href="/" > SIIDPET </a>
+   <!-- /. forma -->
+  <div class="animation-container">
+  <div class="lightning-container">
+  <div class="lightning"></div>
+  <div class="lightning red"></div>
+  </div>
+  </div>
+  
+  <h5 class="mx-2 mt-4" style="text-align: center;">
+    Sistema Inegral del Instituto de Defensoría Pública del Estado de Tamaulipas
+  </h5>
+  <div class="card-body login-card-body" style="background-color: transparent; border: none; border-radius: 10px;" >
 
-    <div class="card-body login-card-body" >
 
       <p class="login-box-msg"> <b> Iniciar sesión </b> </p>
 
@@ -70,7 +123,7 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label for="password" class="col-md-4 col-form-label text-md-end"> Constraseña: </label>
+            <label for="password" class="col-md-4 col-form-label text-md-end"> Contraseña: </label>
 
             <div class="col-md-8">
                 <input id="password" placeholder="Contraseña" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -84,35 +137,18 @@
         </div>
         <div class="row mb-0">
             <div class="col-md-8 offset-md-4">
-                <button type="submit" class="btn btn-primary" style="background-color: #AB0033; border: 1px solid #AB0033;">
-                  <i class="fa-solid fa-right-to-bracket mr-2"></i>
+                <button type="submit" class="btn btn-guindo">
                     Iniciar sesión
                 </button>
             </div>
         </div>
     </form>
-
-      
     </div>
     <!-- /.login-card-body -->
   </div>
-
-
-  
-
-
-    
-
-
-
 </div>
 <!-- /.login-box -->
-
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
-<script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }} "></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('js/adminlte.min.js') }}"></script>
-</body>
-</html>
+<script

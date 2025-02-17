@@ -16,7 +16,8 @@ class AsignacionMedidasController extends Controller
     {
         //
         $asignacionMedidas = AsignacionMedidas::all();
-        return response( $asignacionMedidas );
+        // return response( $asignacionMedidas );
+        return response()->json(['asignacionmedidas' => $asignacionMedidas ], 201);
     }
 
     /**

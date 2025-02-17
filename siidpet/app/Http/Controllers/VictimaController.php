@@ -15,7 +15,11 @@ class VictimaController extends Controller
     public function index()
     {
         //
-        $victima = Victima::all();
+        // $victima = Victima::all();
+
+        $victima = Victima::with('pais','estado', 'municipio', 'ocupacion')->get();
+
+
         return response($victima);
     }
 
@@ -56,7 +60,7 @@ class VictimaController extends Controller
         $victima = Victima::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos de la victima guardados con éxito', 'objeto' => $victima ], 201);
+        return response()->json(['mensaje' => 'Datos de la victima guardados con éxito', 'victima' => $victima ], 201);
 
     }
 
@@ -69,7 +73,12 @@ class VictimaController extends Controller
     public function show($id)
     {
         //
-        $victima = Victima::find($id);
+        // $victima = Victima::find($id);
+
+        $victima = Victima::with('pais', 'estado', 'municipio', 'ocupacion')
+        ->where('id', $id)
+        ->first();
+
 
         if (!$victima) {
             return response()->json(['mensaje' => 'Victima no encontrada'], 404);

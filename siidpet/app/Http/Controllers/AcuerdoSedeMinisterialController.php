@@ -49,7 +49,7 @@ class AcuerdoSedeMinisterialController extends Controller
         $acuerdoSedeMinisterial = AcuerdoSedeMinisterial::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos del acuerdo sede ministerial creados con éxito', 'objeto' => $acuerdoSedeMinisterial ], 201);
+        return response()->json(['mensaje' => 'Datos del acuerdo sede ministerial creados con éxito', 'acuerdosedeministerial' => $acuerdoSedeMinisterial ], 201);
     }
 
     /**
@@ -66,7 +66,7 @@ class AcuerdoSedeMinisterialController extends Controller
             return response()->json(['mensaje' => 'Datos del acuerdo no encontrados'], 404);
         }
 
-        return response()->json(['victima' => $acuerdoSedeMinisterial ], 201);
+        return response()->json(['acuerdosedeministerial' => $acuerdoSedeMinisterial ], 201);
     }
 
     /**

@@ -13,6 +13,7 @@ class Escolaridad extends Model
 
     protected $fillable = [
         'nombre',
+        'activo',
         // ... otras propiedades ...
     ];
 

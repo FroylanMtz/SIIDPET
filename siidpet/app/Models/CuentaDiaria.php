@@ -23,6 +23,8 @@ class CuentaDiaria extends Model
         'resultado',
         'imputado',
         'delito',
-        'audiencia'
+        'audiencia',
+        'activo',
+
     ];
 }

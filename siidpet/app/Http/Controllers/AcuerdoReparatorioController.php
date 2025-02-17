@@ -48,7 +48,7 @@ class AcuerdoReparatorioController extends Controller
         $acuerdoReparatorio = AcuerdoReparatorio::create( $request->all() );
 
         // Puedes realizar otras acciones después de la creación, como redireccionar o devolver una respuesta JSON
-        return response()->json(['mensaje' => 'Datos del acuerdo repatario creados con éxito', 'objeto' => $acuerdoReparatorio ], 201);
+        return response()->json(['mensaje' => 'Datos del acuerdo repatario creados con éxito', 'acuerdoreparatorio' => $acuerdoReparatorio ], 201);
     }
 
     /**
@@ -66,7 +66,7 @@ class AcuerdoReparatorioController extends Controller
             return response()->json(['mensaje' => 'Datos del acuerdo no encontrados'], 404);
         }
 
-        return response()->json(['victima' => $acuerdoReparatorio], 201);
+        return response()->json(['acuerdoreparatorio' => $acuerdoReparatorio], 201);
     }
 
     /**
@@ -94,7 +94,7 @@ class AcuerdoReparatorioController extends Controller
 
         // Verifica si el usuario existe
         if (!$acuerdoReparatorio) {
-            return response()->json(['mensaje' => 'Datos del acuerdo reparatorio no encontrados'], 404);
+            return response()->json(['mensaje' => 'Datos del acuerdo reparatorio no encontrado'], 404);
         }
 
         // Actualiza los datos con los nuevos datos proporcionados

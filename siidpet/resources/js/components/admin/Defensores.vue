@@ -4,14 +4,8 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Defensores</h1>
+                    <h1 class="m-0">Usuarios</h1>
                 </div><!-- /.col -->
-                <!-- <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                        <li class="breadcrumb-item active"> Defensores </li>
-                    </ol>
-                </div> -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -21,11 +15,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <!-- <h3 class="card-title mt-2"> Registro de defensores= usuarios </h3> -->
                         <div class="card-tools">
                             <button class="btn btn-success" data-toggle="modal" data-target="#modalAgregarDefensor"
                                 @click="abrirModalRegistro">
-                                <i class="fa-solid fa-circle-plus"></i> Nuevo
+                                <i class="fa-solid fa-circle-plus"></i> Registrar usuarios
                             </button>
                         </div>
                     </div>
@@ -66,9 +59,15 @@
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
 
-                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1" @click="eliminarUsuario(item)">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivarUsuario(item)">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
+
+                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="desactivarUsuario(item)">
+                                        <i class="fa-solid fa-power-off"></i>
+                                    </button>
+
+
                                 </div>
                             </template>
                         </EasyDataTable>
@@ -90,93 +89,134 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="name">Nombres</label>
+                                    <input v-model="form.name" type="text" class="form-control" id="name"
+                                        aria-describedby="emailHelp" placeholder="Nombres">
+                                    <div style="color: red;" v-if="form.errors.has('name')" v-html="form.errors.get('name')" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="fathername">Apellido Paterno</label>
+                                    <input v-model="form.fathername" type="text" class="form-control" id="fathername"
+                                        placeholder="Apellido Paterno">
 
-                            <div class="form-group">
-                                <label for="Nombres">Nombres</label>
-                                <input v-model="form.nombres" type="text" class="form-control" id="nombres"
-                                    aria-describedby="emailHelp" placeholder="Nombres">
+                                    <div style="color: red;" v-if="form.errors.has('fathername')"
+                                        v-html="form.errors.get('fathername')" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="mothername">Apellido Materno</label> 
+                                    <input v-model="form.mothername" type="text" class="form-control" id="mothername"
+                                        placeholder="Apellido Materno">
+                                    <div style="color: red;" v-if="form.errors.has('mothername')"
+                                        v-html="form.errors.get('mothername')" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="phone">Telefono</label>
+                                    <input type="number" pattern="\d{12}" maxlength="12" v-model="form.phone"  class="form-control" id="phone"
+                                        placeholder="8341234567">
+                                    <div style="color: red;" v-if="form.errors.has('phone')"
+                                        v-html="form.errors.get('phone')" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">Correo</label> 
+                                    <input v-model="form.email" type="text" class="form-control" id="email"
+                                        placeholder="ejemplo@ejemplo.com">
+                                    <div style="color: red;" v-if="form.errors.has('email')"
+                                        v-html="form.errors.get('email')" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="Sexo">Sexo</label>
+                                    <select v-model="form.gender" id="gender" type="text" class="form-control " name="gender">
+                                        <option value="Masculino">
+                                        Masculino
+                                        </option>
+                                        <option value="Femenino">
+                                            Femenino
+                                        </option>
+                                    </select>
+                                    <div style="color: red;" v-if="form.errors.has('gender')"
+                                        v-html="form.errors.get('gender')" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="Municipio de trabajo">Municipio</label>
+                                    <select v-model="defensor.id_municipio" id="rol" type="text" class="form-control " name="id_municipio">
+                                        <option v-for="municipio in municipios" :value="municipio.id">
+                                            {{ municipio.nombre }}
+                                        </option>
+                                    </select>
+                                    <div style="color: red;" v-if="defensor.errors.has('id_municipio')"
+                                        v-html="defensor.errors.get('id_municipio')" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="Municipio de trabajo">Coordinación</label>
+                                    <select v-model="defensor.id_coordinacion" id="rol" type="text" class="form-control " name="id_municipio">
+                                        <option v-for="coordinacion in coordinaciones" :value="coordinacion.id">
+                                            {{ coordinacion.nombre }}
+                                        </option>
+                                    </select>
+                                    <div style="color: red;" v-if="defensor.errors.has('id_coordinacion')"
+                                        v-html="defensor.errors.get('id_coordinacion')" />
+                                </div>
 
-                                <div style="color: red;" v-if="form.errors.has('nombres')" v-html="form.errors.get('nombres')" />
+                                
 
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Apellido paterno">Apellido Paterno</label>
-                                <input v-model="form.apellido_paterno" type="text" class="form-control" id="apellido_paterno"
-                                    placeholder="Apellido Paterno">
-
-                                <div style="color: red;" v-if="form.errors.has('apellido_paterno')"
-                                    v-html="form.errors.get('apellido_paterno')" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Apellido Materno">Apellido Materno</label> <span  v-if="actualizarDefensorCheck" style="color: red;"> *  </span>
-                                <input v-model="form.apellido_materno" type="text" class="form-control" id="apellido_materno"
-                                    placeholder="Apellido Materno">
-                                <div style="color: red;" v-if="form.errors.has('apellido_materno')"
-                                    v-html="form.errors.get('apellido_materno')" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Telefono">Telefono</label> <span  v-if="actualizarDefensorCheck" style="color: red;"> *  </span>
-                                <input v-model="form.telefono" type="text" class="form-control" id="telefono"
-                                    placeholder="8341234567">
-                                <div style="color: red;" v-if="form.errors.has('telefono')"
-                                    v-html="form.errors.get('telefono')" />
-                            </div>
-
-                            <div class="form-group">
-                                <label for="Sexo">Sexo</label>
-
-                                <select v-model="form.sexo" id="sexo" type="text" class="form-control " name="IDRol">
-                                    <option value="Masculino">
-                                       Masculino
-                                    </option>
-                                    <option value="Femenino">
-                                        Femenino
-                                     </option>
-                                </select>
-
-                                <div style="color: red;" v-if="form.errors.has('sexo')"
-                                    v-html="form.errors.get('sexo')" />
-                            </div>
+                                <div class="form-group col-md-12">
+                                    <label for="Contraseña del usuario">Rol</label>
+                                    <select v-model="form.IDRol" id="rol" type="text" class="form-control " name="IDRol">
+                                        <option value=""> Seleccione una opcion </option>
+                                        <option value="1"> Administrador </option>
+                                        <option value="2"> Director General </option>
+                                        <option value="3"> Director Defensoria </option>
+                                        <option value="4"> Director Asesoria </option>
+                                        <option value="5"> Jefe de Asesorias </option>
+                                        <option value="6"> Defensor </option>
+                                        <option value="7"> Asesor </option>
+                                    </select>
+                                    <div style="color: red;" v-if="form.errors.has('IDRol')"
+                                        v-html="form.errors.get('IDRol')" />
+                                </div>
+    
+    
+                                
 
 
-                            <div class="form-group">
-                                <label for="Municipio de trabajo">Municipio:</label>
-                                <select v-model="form.id_municipio" id="rol" type="text" class="form-control " name="id_municipio">
-                                    <option v-for="municipio in municipios" :value="municipio.id">
-                                        {{ municipio.nombre }}
-                                    </option>
-                                </select>
+                                <div class="form-group col-md-12">
+                                    <label for="fathername">Contraseña</label>
 
-                                <div style="color: red;" v-if="form.errors.has('id_municipio')"
-                                    v-html="form.errors.get('id_municipio')" />
+                                    <span  v-if="actualizarDefensorCheck" style="color: red;"> *  </span>
+
+
+                                    <input v-model="form.password" type="password" class="form-control" id="password"
+                                        placeholder="contraseña">
+
+                                    <div style="color: red;" v-if="form.errors.has('password')"
+                                        v-html="form.errors.get('password')" />
+                                </div>
+
+                                <span  v-if="actualizarDefensorCheck" style="color: red;"> * Solo llene si desea cambiar la contraseña </span>
+
+
+
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
                             </button>
-
                             <button  v-if="!actualizarDefensorCheck" type="submit" :disabled="form.busy" class="btn btn-primary" @click="registrarDefensor">
                                 <i class="fas fa-save"></i> Registrar
                             </button>
                             <button v-else type="submit" :disabled="form.busy" class="btn btn-warning" @click="editarDefensor">
                                 <i class="fas fa-save"></i> Actualizar
                             </button>
-
-
-
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
-
 <script lang="ts">
 import { ref } from "vue";
 import type { Header, Item } from "vue3-easy-data-table";
@@ -185,132 +225,191 @@ import Swal from 'sweetalert2'
 export default {
     data() {
         return {
+            roles: ref(["Administrador", "Director General", "Director Defensoría", "Director Asesorias", "Jefe Asesorias", "Defensor", "Asesor"]),
             actualizarDefensorCheck: ref(false),
             searchField: ref("name"),
             searchValue: ref(""),
             themeColor: "#AB0033",
             datos: [
-                { text: "Nombres", value: "nombres" },
-                { text: "Apellido Materno", value: "apellido_materno" },
-                { text: "Apellido Paterno", value: "apellido_paterno" },
+                { text: "Nombres", value: "user.name" },
+                { text: "Apellido Materno", value: "user.fathername" },
+                { text: "Apellido Paterno", value: "user.mothername" },
                 { text: "Municipio", value: "municipio.nombre"},
-                { text: "Sexo", value: "sexo"},
-                { text: "Telefono", value: "telefono"},
+                { text: "Sexo", value: "user.gender"},
+                { text: "Telefono", value: "user.phone"},
+                { text: "Correo", value: "user.email"},
+                { text: "Rol", value: "rol"},
                 { text: "Opciones", value: "operation" },
             ],
             items: [],
             municipios: [],
+            coordinaciones: [],
             form: new Form({
                 id: '',
-                nombres: '',
-                apellido_paterno: '',
-                apellido_materno: '',
-                id_municipio: '',
-                telefono: '',
-                sexo: '',
+                name: '',
+                fathername: '',
+                mothername: '',
+                phone: '',
+                email: '',
+                email_verified_at: '',
+                password: '',
+                IDRol: 6,
+                gender: '',
+                activo:1,
+            }),
 
+            defensor: new Form({
+                id: '',
+                id_usuario: '',
+                id_municipio: '',
+                id_coordinacion: '',
+                sexo: '',
+                activo: 1,
             })
         }
     },
     mounted() {
         this.obtenerDefensores();
         this.obtenerMunicipios();
+        this.obtenerCoordinaciones();
     },
     methods: {
-        abrirModalRegistro() {
-            this.actualizarDefensorCheck = false;
+        resetearFormulario(){
             this.form.reset();
             this.form.clear();
+            this.defensor.reset();
+            this.defensor.clear();
         },
-
+        abrirModalRegistro() {
+            this.actualizarDefensorCheck = false;
+            this.resetearFormulario();
+        },
+        obtenerCoordinaciones() {
+            this.axios.get('/coordinacion').then((response) => {
+                this.coordinaciones = response.data;
+            })
+        },
         obtenerMunicipios() {
             this.axios.get('/municipios').then((response) => {
-                this.municipios= response.data.filter(objeto => objeto.estado === 28);
-                console.log("Municipios");
-                console.log(this.municipios);
+                this.municipios = response.data.filter(objeto => objeto.id_estado === 28);
             })
         },
 
         obtenerDefensores() {
+            this.items = [];
             this.axios.get('/defensor').then( (response) => {
-                this.items = response.data;
+                // this.items = response.data;
+                for (let i = 0; i < response.data.length; i++) {
+                    let element = response.data[i];
+                    element.rol = this.roles[ element.user.IDRol - 1 ];
+                    this.items.push( element );
+
+                    console.log(element);
+                }
             })
         },
 
         async registrarDefensor() {
-            await this.form.post('/defensor').then((response) => {
-                console.log(response);
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: response.data.mensaje,
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-                this.obtenerDefensores();
+            this.defensor.errors.clear();
+            if( this.defensor.id_coordinacion === null || this.defensor.id_coordinacion === "" ){
+                this.defensor.errors.set('id_coordinacion', 'Este campo es requerido');
+                return
+            }
+
+            if( this.defensor.id_municipio === null || this.defensor.id_municipio === "" ){
+                this.defensor.errors.set('id_municipio', 'Este campo es requerido');
+                return
+            }
+            
+            await this.form.post('/users').then( async (response) =>  {
+                
+                this.defensor.id_usuario = response.data.defensor;
+                try {
+                    await this.defensor.post('/defensor').then((response) => {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: response.data.mensaje,
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    });
+                } catch (error) {
+                    console.error('Error al enviar los datos:', error);
+                }
+                this.obtenerDefensores();                
                 $('#modalAgregarDefensor').modal('hide');
+
             }).catch(error => {
                 console.log(error);
             });
+        
+
         },
         async editarDefensor() {
-            await this.form.put('/defensor/' + this.form.id, this.form).then((response) => {
-                console.log(response);
-                this.obtenerDefensores();
-                $('#modalAgregarDefensor').modal('hide');
 
+            try{
+                await this.defensor.put('/defensor/' + this.defensor.id).then((response) => { 
+                }).catch(error => {
+                    console.log(error);
+                });
+
+                await this.form.put('/users/' + this.form.id).then((response) => { 
+                }).catch(error => {
+                    console.log(error);
+                });
+                
                 Swal.fire({
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Usuario actualizado con éxito',
+                    title: 'Defensor actualizado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 })
-            }).catch(error => {
-                console.log(error);
-            });
+                
+                this.obtenerDefensores();
+                $('#modalAgregarDefensor').modal('hide');
+            }catch (error) {
+                console.error('Error al guardar el imputado:', error);
+            }
         },
-        async actualizarDefensor(defensor) {
-            console.log("Datos del defensor a actualizar");
-            console.log(defensor);
-            console.log("Formulario");
-            console.log(this.form);
-            console.log("Municipios");
-            console.log(this.municipios);
-
+        async actualizarDefensor(defensor) {           
+            this.form.fill(defensor.user);
+            this.defensor.fill(defensor);
             $('#modalAgregarDefensor').modal('show');
-            this.form.fill(defensor);
             this.actualizarDefensorCheck = true;
         },
         desactivarUsuario($usuario) {
-
+            
+            
             Swal.fire({
                 title: '¿Está seguro de eliminar este usuario?',
                 showDenyButton: true,
                 confirmButtonText: 'Aceptar',
                 denyButtonText: `Cancelar`,
             }).then((result) => {
+
                 if (result.isConfirmed) {
+                    
                     this.axios.delete('/defensor/' + $usuario.id).then((response) => {
-                        console.log("Respuesta de la eliminacion");
-                        console.log(response);
                         this.obtenerDefensores();
                         $('#modalAgregarPeticionario').modal('hide');
-
-                        Swal.fire({
+                        Swal.fire({ 
                             position: 'top-end',
                             icon: 'success',
-                            title: 'Usuario eliminado con éxito',
+                            title: response.data.mensaje,
                             showConfirmButton: false,
                             timer: 1500
                         })
                     }).catch(error => {
                         console.log(error);
                     });
+
                 } else if (result.isDenied) {
                     //Swal.fire('Changes are not saved', '', 'info')
                 }
             })
+            
 
         }
     }

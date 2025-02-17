@@ -14,7 +14,9 @@ class Estado extends Model
 
     protected $fillable = [
         'nombre',
-        'id_pais'
+        'id_pais',
+        'activo',
+
         // ... otras propiedades ...
     ];
 

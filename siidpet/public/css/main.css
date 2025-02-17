@@ -1,9 +1,2 @@
-/* Modify brand and text color */
-.navbar-custom .navbar-brand,
-.navbar-custom .navbar-text {
-    color: green;
-}
 
-body {
-    background-color: #D1E7E0;
-}
+

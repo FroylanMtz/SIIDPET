@@ -14,7 +14,9 @@ class AsignacionMedidas extends Model
     protected $fillable = [
         'fecha_inicio',
         'fecha_vencimiento',
-        'id_medida_proteccion'
+        'id_medida_proteccion',
+        'activo',
+
         // ... otras propiedades ...
     ];
 

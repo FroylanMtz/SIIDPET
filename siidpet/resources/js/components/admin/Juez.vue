@@ -64,13 +64,11 @@
                                     <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" v-if= "item.activo===1" @click="actualizarRegistro(item)">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-
-                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item)">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item, 'desactivar')">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
-
-                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="activar(item)">
-                                        <i class="<fa-solid fa-plus"></i>
+                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="desactivar(item, 'activar')">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
                                     
                                 </div>
@@ -105,17 +103,18 @@
 
                             </div>     
 
-                           <!--<div class="form-group">
+                          <div class="form-group">
                              <label for="Municipio">  Municipio:</label>
                              <select v-model="form.id_municipio" id="id_municipio" type="text" class="form-control " name="id_municipio">
                                     <option v-for="municipio in municipios" :value="municipio.id">
-                                        {{ municipio.id }}
+                                        {{ municipio.nombre }}
                                     </option>
                                 </select>
 
                                 <div style="color: red;" v-if="form.errors.has('id_municipio')"
                                     v-html="form.errors.get('id_municipio')" />
-                            </div> -->
+                            </div>  
+                            
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <i class="fas fa-times"></i> Cancelar
@@ -156,11 +155,11 @@ export default {
             themeColor: "#AB0033",
             datos: [
                 { text: "Nombre", value: "nombre" },
-               // { text: "Municipio", value: "municipio" },
+                { text: "Municipio", value: "municipio" },
                 { text: "Opciones", value: "operation" }
             ],
             items: [],
-           // municipios: [],
+            municipios: [],
             form: new Form({
                 id: '',
                 nombre: '',
@@ -171,7 +170,7 @@ export default {
     },
     mounted() {
         this.obtenerDatos();
-       // this.obtenerMunicipios();
+        this.obtenerMunicipios();
 
     },
     methods: {
@@ -183,29 +182,25 @@ export default {
 
         obtenerDatos() {
             this.items = [];
-            this.axios.get('/juez').then( (response) => {
-               // console.log("Usuarios obtenidos");
- 
+            this.axios.get('/juezcontrol').then( (response) => {
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     element.rol = this.roles[ element.IDRol - 1 ]
-                    //console.log("usuario "+i + " : ");
-                  //  console.log(element);
                     this.items.push( element );
                 }
             })
         },
  
-    //  obtenerMunicipios() {
-          //  this.axios.get('/municipios').then((response) => {
-             //   this.municipios= response.data.filter(objeto => objeto.estado === 28);
-              //  console.log("Municipios");
-               // console.log(this.municipios);
-           // })
-     //   },
+     obtenerMunicipios() {
+            this.axios.get('/municipios').then((response) => {
+                this.municipios= response.data;
+                console.log("Municipios");
+                console.log(this.municipios);
+            })
+        },
         async registrar() {
 
-            await this.form.post('/juez/').then((response) => {
+            await this.form.post('/juezcontrol').then((response) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -213,8 +208,10 @@ export default {
                     showConfirmButton: false,
                     timer: 1500
                 }) 
+                console.log("entra")
                  console.log(response.data)
-                this.obtenerDatos();
+                 console.log("entra")
+               // this.obtenerDatos();
 
                 $('#modalAgregar').modal('hide');
 
@@ -227,11 +224,14 @@ export default {
         },
         async actualizarRegistro(juez) {
             $('#modalAgregar').modal('show');
+            console.log(juez);
             this.form.fill(juez);
             this.actualizarCheck = true;
         },
         async editarRegistro() {
-            await this.form.put('/juez/' + this.form.id, this.form).then((response) => {
+            console.log("se va a mandar");
+            console.log(this.id);
+            await this.form.put('/juezcontrol/' + this.form.id, this.form).then((response) => {
                 console.log(response);
                 this.obtenerDatos();
                 $('#modalAgregar').modal('hide');
@@ -239,7 +239,7 @@ export default {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Usuario actualizado con éxito',
+                    title: 'Juez actualizado con éxito',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -248,18 +248,16 @@ export default {
             });
         },
 
-        desactivar($usuario) {
-       
+        desactivar($juez, mensaje) {
             Swal.fire({
-                title: '¿Está seguro de desactivar este Registro??',
+                title: '¿Está seguro de ' + mensaje + ' este registro?',
                 showDenyButton: true,
                 confirmButtonText: 'Aceptar',
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.delete('/juez/' + $usuario.id).then((response) => {
-                        console.log("Respuesta de la eliminacion");
-                        console.log(response);
+                    this.axios.delete('/juezcontrol/' + $juez.id).then((response) => {
+                        
                         this.obtenerDatos();
                         $('#modalAgregar').modal('hide');
 
@@ -277,8 +275,9 @@ export default {
                     //Swal.fire('Changes are not saved', '', 'info')
                 }
             }) 
-
         },
+
+        /*
         activar($elemento) {
        
             Swal.fire({
@@ -288,7 +287,7 @@ export default {
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.axios.get('/juez/'+ $elemento.id+"/edit").then((response) => {
+                    this.axios.get('/juezcontrol/'+ $elemento.id+"/edit").then((response) => {
                         console.log("Respuesta de la activacion");
                         console.log(response);
                         this.obtenerDatos();
@@ -308,8 +307,7 @@ export default {
                     //Swal.fire('Changes are not saved', '', 'info')
                 }
             }) 
-
-        }
+        }*/
     }
 }
 </script>

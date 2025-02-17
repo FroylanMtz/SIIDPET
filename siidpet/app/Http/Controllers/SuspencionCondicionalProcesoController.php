@@ -43,6 +43,7 @@ class SuspencionCondicionalProcesoController extends Controller
             'fecha_fin' => 'required',
             'resultado' => 'required',
             'reporte_cumplimiento' => 'required',
+            'observaciones' => 'required'
         ]);
 
         //Se usa la función create() con el request que guarda el objeto

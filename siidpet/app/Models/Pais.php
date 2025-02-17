@@ -13,6 +13,7 @@ class Pais extends Model
 
     protected $fillable = [
         'nombre',
+        'activo',
         // ... otras propiedades ...
     ];
 

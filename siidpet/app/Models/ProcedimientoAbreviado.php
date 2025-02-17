@@ -13,6 +13,7 @@ class ProcedimientoAbreviado extends Model
 
     protected $fillable = [
         'fecha',
+        'activo',
         'sentencia',
         // ... otras propiedades ...
     ];

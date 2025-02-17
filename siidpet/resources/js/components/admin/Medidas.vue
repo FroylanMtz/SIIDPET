@@ -64,13 +64,11 @@
                                     <button class="btn btn-warning btn-sm mt-2 mb-2 mr-1" v-if= "item.activo===1" @click="actualizarRegistro(item)">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-
-                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item)">
-                                        <i class="fa-solid fa-trash"></i>
+                                    <button class="btn btn-danger btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===1" @click="desactivar(item, 'desactivar')">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
-
-                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="activar(item)">
-                                        <i class="<fa-solid fa-plus"></i>
+                                    <button class="btn btn-success btn-sm mt-2 mb-2 mr-1 " v-if= "item.activo===0" @click="desactivar(item, 'activar')">
+                                        <i class="fa-solid fa-power-off"></i>
                                     </button>
                                     
                                 </div>
@@ -170,13 +168,9 @@ export default {
         obtenerDatos() {
             this.items = [];
             this.axios.get('/medidacautelar').then( (response) => {
-               // console.log("Usuarios obtenidos");
- 
                 for (let i = 0; i < response.data.length; i++) {
                     let element = response.data[i];
                     element.rol = this.roles[ element.IDRol - 1 ]
-                    //console.log("usuario "+i + " : ");
-                  //  console.log(element);
                     this.items.push( element );
                 }
             })
@@ -261,15 +255,13 @@ export default {
         activar($elemento) {
        
             Swal.fire({
-                title: '¿Está seguro de activar este Registro??',
+                title: '¿Está seguro de activar este Registro?',
                 showDenyButton: true,
                 confirmButtonText: 'Aceptar',
                 denyButtonText: `Cancelar`,
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.axios.get('/medidacautelar/'+ $elemento.id+"/edit").then((response) => {
-                        console.log("Respuesta de la activacion");
-                        console.log(response);
                         this.obtenerDatos();
                         $('#modalAgregar').modal('hide');
 

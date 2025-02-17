@@ -12,33 +12,12 @@ import { createApp } from 'vue';
  * registering components with the application instance so they are ready
  * to use in your application's views. An example is included for you.
  */
-
-//const app = createApp({});
-
-//import ExampleComponent from './components/ExampleComponent.vue';
-//app.component('example-component', ExampleComponent);
-//import 'carbon-components/css/carbon-components.css';
-//import CarbonComponentsVue from '@carbon/vue';
-
-
-/*import {
-    provideFluentDesignSystem,
-    fluentCombobox,
-    fluentOption
-} from "@fluentui/web-components";
-
-provideFluentDesignSystem()
-    .register(
-        fluentCombobox(),
-        fluentOption()
-    ); */
-    
-
 import router from './router/index';
 import AppComponent from './components/App.vue';
 
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
+import { MaskInput } from "vue-mask-next";
 
 
 import axios from 'axios'
@@ -51,20 +30,22 @@ const app = createApp({
     }
 });
 
-
 import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
 import 'v-calendar/style.css';
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
 // Use plugin defaults (optional)
 app.use(setupCalendar, {})
-
-// Use the components
 app.component('VCalendar', Calendar)
 app.component('VDatePicker', DatePicker)
-
 app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(router)
 app.use(VueAxios, axios)
+app.component("v-select", vSelect);
+app.component("MaskInput", MaskInput);
+
+
 app.mount('#app');
 
 

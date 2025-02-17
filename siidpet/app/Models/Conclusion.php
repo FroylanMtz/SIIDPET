@@ -14,6 +14,8 @@ class Conclusion extends Model
     protected $fillable = [
         'nombre',
         'fecha_conclusion',
+        'activo',
+
     ];
 
 }

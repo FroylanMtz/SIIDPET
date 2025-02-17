@@ -14,15 +14,19 @@ return new class extends Migration
     public function up()
     {
         //
-        Schema::create('ugi', function (Blueprint $table) {
+        Schema::create('coordinacion', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->boolean('activo')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('pais', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
             $table->boolean('activo')->nullable();
             $table->timestamps();
         });
-
-        
-        
 
         Schema::create('estado', function (Blueprint $table) {
             $table->id();
@@ -32,7 +36,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('p_municipio', function (Blueprint $table) {
+        Schema::create('municipio', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
             $table->foreignId('id_estado')->constrained('estado')->nullable();
@@ -40,16 +44,33 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('ugi', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre')->nullable();
+            $table->boolean('activo')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('ugi_municipio', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_municipio')->constrained('municipio')->nullable();
+            $table->foreignId('id_ugi')->constrained('ugi')->nullable();
+            $table->timestamps();
+        });
 
         Schema::create('defensor', function (Blueprint $table) {
             $table->id();
-            $table->string('nombres');
-            $table->string('apellido_paterno')->nullable();
-            $table->string('apellido_materno')->nullable();
-            $table->string('telefono')->nullable();
-            $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
+            $table->foreignId('id_usuario')->constrained('users')->nullable();
+            $table->foreignId('id_municipio')->constrained('municipio')->nullable();
             $table->string('sexo')->nullable();
             $table->boolean('activo')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('defensor_ugi', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_defensor')->constrained('defensor')->nullable();
+            $table->foreignId('id_ugi')->constrained('ugi')->nullable();
             $table->timestamps();
         });
 
@@ -76,7 +97,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('p_imputado', function (Blueprint $table) {
+        Schema::create('imputado', function (Blueprint $table) {
             $table->id();
             $table->string('nombres')->nullable();
             $table->string('apellido_paterno')->nullable();
@@ -86,7 +107,7 @@ return new class extends Migration
             $table->string('sexo')->nullable();
             $table->foreignId('id_pais')->constrained('pais')->nullable();
             $table->foreignId('id_estado')->constrained('estado')->nullable();
-            $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
+            $table->foreignId('id_municipio')->constrained('municipio')->nullable();
             $table->string('estado_civil')->nullable();
             $table->string('fecha_de_nacimiento')->nullable();
             $table->foreignId('id_escolaridad')->constrained('escolaridad')->nullable();
@@ -95,7 +116,7 @@ return new class extends Migration
             $table->timestamps();
         });
         
-        Schema::create('p_delito', function (Blueprint $table) {
+        Schema::create('delito', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
             $table->boolean('activo')->nullable();
@@ -112,7 +133,7 @@ return new class extends Migration
             $table->string('sexo')->nullable();
             $table->foreignId('id_pais')->constrained('pais')->nullable();
             $table->foreignId('id_estado')->constrained('estado')->nullable();
-            $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
+            $table->foreignId('id_municipio')->constrained('municipio')->nullable();
             $table->string('estado_civil')->nullable();
             $table->string('fecha_nacimiento')->nullable();
             $table->foreignId('id_ocupacion')->constrained('ocupacion')->nullable();
@@ -165,7 +186,7 @@ return new class extends Migration
         Schema::create('juez_control', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
-            $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
+            $table->foreignId('id_municipio')->constrained('municipio')->nullable();
             $table->boolean('activo')->nullable();
             $table->timestamps();
         });
@@ -243,7 +264,7 @@ return new class extends Migration
         Schema::create('tribunal_enjuiciamiento', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
-            $table->foreignId('id_municipio')->constrained('p_municipio')->nullable();
+            $table->foreignId('id_municipio')->constrained('municipio')->nullable();
             $table->boolean('activo')->nullable();
             $table->timestamps();
         });
@@ -289,8 +310,8 @@ return new class extends Migration
             $table->foreignId('id_defensor')->constrained('defensor')->nullable();
             $table->foreignId('id_entrevista')->constrained('entrevista')->nullable();
             $table->string('nuc')->nullable();
-            $table->foreignId('id_imputado')->constrained('p_imputado')->nullable();
-            $table->foreignId('id_delito')->constrained('p_delito')->nullable();
+            $table->foreignId('id_imputado')->constrained('imputado')->nullable();
+            $table->foreignId('id_delito')->constrained('delito')->nullable();
             $table->foreignId('id_victima')->constrained('victima')->nullable();
             $table->foreignId('id_flagrancia')->constrained('flagrancia')->nullable();
             $table->text('determinacion_mp')->nullable();

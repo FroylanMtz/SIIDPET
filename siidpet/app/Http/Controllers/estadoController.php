@@ -58,13 +58,10 @@ class estadoController extends Controller
     public function show($id)
     {
         //
-        $estado = Estado::find($id);
-        //$pais = $estado->pais;
-
+        $estado = Estado::where('id_pais', $id)->get();
         if (! $estado ) {
             return response()->json(['mensaje' => 'Estado no encontrado'], 404);
         }
-
         return response()->json(['estado' => $estado], 201);
     }
 

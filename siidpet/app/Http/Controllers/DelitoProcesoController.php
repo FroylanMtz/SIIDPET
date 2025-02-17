@@ -44,6 +44,7 @@ class DelitoProcesoController extends Controller
             'fecha_fin' => 'required',
             'resultado' => 'required',
             'observaciones' => 'required',
+            'activo' => 'required',
         ]);
 
         //Se usa la función create() con el request que guarda el objeto
